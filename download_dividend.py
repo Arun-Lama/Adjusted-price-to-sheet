@@ -46,22 +46,24 @@ def scrape_fiscal_year_data(driver, fy):
 
     # Select fiscal year from dropdown
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'select2-year-container'))).click()
-    driver.find_element(By.CLASS_NAME, 'select2-search__field').send_keys(fy)    
-    driver.find_element(By.CLASS_NAME, 'select2-search__field').send_keys(Keys.RETURN)
+    time.sleep(1)
+    # driver.find_element(By.CLASS_NAME, 'select2-search__field').send_keys(fy)    
+    # driver.find_element(By.CLASS_NAME, 'select2-search__field').send_keys(Keys.RETURN)
 
     # Submit the form
     driver.find_element(By.ID, "btn_pd_submit").click()
     time.sleep(1)
-    # Wait for processing spinner to appear and disappear
-    WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
-    WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
+    # # Wait for processing spinner to appear and disappear
+    # WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
+    # WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
     
     # Set table length to 50
     element = driver.find_element(By.NAME, 'myTableFD_length')
     dropdown = Select(element)
     dropdown.select_by_visible_text('50')
-    WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
-    WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
+    timel.sleep(1)
+    # WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
+    # WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
     
     # Scrape the first page
     html = driver.page_source
