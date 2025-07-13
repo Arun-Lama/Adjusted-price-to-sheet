@@ -61,7 +61,7 @@ def scrape_fiscal_year_data(driver, fy):
     element = driver.find_element(By.NAME, 'myTableFD_length')
     dropdown = Select(element)
     dropdown.select_by_visible_text('50')
-    timel.sleep(1)
+    time.sleep(1)
     # WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
     # WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
     
