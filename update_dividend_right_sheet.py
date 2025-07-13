@@ -1,0 +1,8 @@
+from download_dividend import update_dividend_history_file
+from download_right import scrape_rights_share_data
+
+# dividend_history_data_sheetID = "1eMRKEPtTaIxG8kTm573b1l9su-OK5AHZo_Fn0gRYb50"
+# dividend_data_df, dividend_book_closes_today = update_dividend_history_file(dividend_history_data_sheetID)
+
+right_history_sheet_id = "14Ce0luKIoqz6YkukHN9giaYpJUTKtZwhtntSvoP7TV4"
+right_data_df, right_book_closes_today = scrape_rights_share_data(right_history_sheet_id)
