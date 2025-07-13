@@ -51,7 +51,7 @@ def scrape_fiscal_year_data(driver, fy):
 
     # Submit the form
     driver.find_element(By.ID, "btn_pd_submit").click()
-
+    time.sleep(1)
     # Wait for processing spinner to appear and disappear
     WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, 'myTableFD_processing')))
     WebDriverWait(driver, 15).until(EC.invisibility_of_element_located((By.ID, 'myTableFD_processing')))
