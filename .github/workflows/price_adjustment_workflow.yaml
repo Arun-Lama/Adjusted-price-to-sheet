@@ -2,7 +2,7 @@ name: Daily Price Adjustment
 
 on:
   schedule:
-    - cron: '15 23 * * 0-4' #'45 9 * * 0-4'  # 9:45 AM UTC = 3:30 PM NPT, Sunday to Thursday
+    - cron: '45 9 * * 0-4' 
   workflow_dispatch:
 
 jobs:
