@@ -112,17 +112,19 @@ class PriceAdjuster:
                     segmented_price_series = pd.concat([concat[index - 1], fragmented_data[book_close_dates.index(date)]])
 
             if adj_type == 'Cash Dividend':
+                segmented_price_series[cols_to_convert] = segmented_price_series[cols_to_convert].astype(float)
+                price_day_before_bookclose = segmented_price_series['Close'].iloc[-1]
                 adjustment_value = float(adjustment_factor)
                 
-                if adjustment_value > 10:
-                    price_day_before_bookclose = list(segmented_price_series[cols_to_convert].Close)[-1]
-                    segmented_price_series[cols_to_convert] = segmented_price_series[cols_to_convert].astype(float)
+                # Apply adjustment only if yield > 10%
+                if adjustment_value / price_day_before_bookclose > 0.10:
                     segmented_price_series[cols_to_convert] = segmented_price_series[cols_to_convert] / (
-                        1 + adjustment_value / float(price_day_before_bookclose)
+                        1 + adjustment_value / price_day_before_bookclose
                     )
                 else:
-                    # No adjustment; keep original prices
-                    segmented_price_series = segmented_price_series
+                    # Skip adjustment (keep prices as is)
+                    pass
+
 
             elif adj_type == 'Bonus Share':
                 segmented_price_series[cols_to_convert] /= (1 + float(adjustment_factor) / 100)
