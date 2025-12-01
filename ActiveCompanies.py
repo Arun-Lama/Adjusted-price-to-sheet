@@ -35,7 +35,7 @@ def setup_driver():
   options.add_experimental_option("prefs", prefs)
 
   # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-  driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="137.0.7151.40").install()), options=options)
+  driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="142.0.7241.0").install()), options=options)
   return driver
 
 def active_companies():
