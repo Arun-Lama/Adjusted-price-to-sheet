@@ -30,7 +30,7 @@ print(f"Latest date in data: {latest_date}")
 latest_date_data = unadj_data_df[unadj_data_df['Date'] == latest_date]
 
 # Get tickers from latest date, exclude Index sector
-active_companies_tickers = active_companies_df['Ticker'].unique().tolist()
+active_companies_tickers = latest_date_data['Ticker'].unique().tolist()
 
 print(f"Number of active companies: {len(active_companies_tickers)}")
 
