@@ -37,39 +37,28 @@ def setup_driver():
   # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 # To (use valid version):
-  driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="142.0.7241.69").install()), options=options)
-  return driver
+def setup_driver():
+    # Setup Chrome
+    HEADLESS = True  # Change to False for debugging
 
-def active_companies():
-    driver = setup_driver()  
-    # Open the webpage
-    base_url = "https://nepalstock.com/company"
-    driver.get(base_url)
-    time.sleep(3)
-    # Wait for the dropdown to be present
-    wait = WebDriverWait(driver, 10)
-    dropdown = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/app-root/div/main/div/app-company/div/div[2]/div/div[5]/div/select")))
-    
-    # Click the dropdown to reveal options
-    dropdown.click()
-    time.sleep(1)
-    # Select '500' from the dropdown using the specific XPath
-    option_500 = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/app-root/div/main/div/app-company/div/div[2]/div/div[5]/div/select/option[6]")))
-    option_500.click()
-    time.sleep(1)
-    # Wait for the table to reload with 500 rows
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "table.table__lg.table-striped.table__border.table__border--bottom")))
-    
-    # Extract the table HTML
-    table_html = driver.find_element(By.CSS_SELECTOR, "table.table__lg.table-striped.table__border.table__border--bottom").get_attribute("outerHTML")
-    
-    # Use Pandas to read the HTML table
-    active_companies_df = pd.read_html(StringIO(table_html))[0]
-    
-    # Save the DataFrame to a CSV file
-    
-    # Close the WebDriver
-    driver.quit()
+    options = Options()
+    options.add_argument("start-maximized")
+    if HEADLESS:
+        options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("window-size=1920,1080")
+    options.add_argument("--remote-debugging-port=9222")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36")
+
+    # Disable images
+    prefs = {"profile.managed_default_content_settings.images": 2}
+    options.add_experimental_option("prefs", prefs)
+
+    # CHANGE THIS LINE - Remove version specification
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    return driver
 
 
 # Define the data
