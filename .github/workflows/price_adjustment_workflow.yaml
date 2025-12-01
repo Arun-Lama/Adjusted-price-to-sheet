@@ -21,19 +21,10 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install ChromeDriver 142 (matching GitHub Actions Chrome)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          
-          # Download ChromeDriver 142.0.7241.0
-          wget -q https://storage.googleapis.com/chrome-for-testing-public/142.0.7241.0/linux64/chromedriver-linux64.zip
-          unzip chromedriver-linux64.zip
-          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-          
-          # Verify installation
-          chromedriver --version
+      - name: Set up Chrome and ChromeDriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 'stable'
 
       - name: Install Python dependencies
         run: |
