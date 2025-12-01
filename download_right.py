@@ -17,20 +17,35 @@ from datetime import date
 
 # Function to set up the WebDriver
 def setup_driver():
-    # Setup Chrome options to run headless and disable images
     options = Options()
-    options.add_argument("start-maximized")
-    options.add_argument("--headless")  # Run in headless mode
-    options.add_argument("--disable-gpu")  # Disable GPU acceleration
-    options.add_argument("--no-sandbox")  # Bypass OS security model
-    options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-    options.add_argument("window-size=1920,1080")  # Set the window size for consistency
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")
     
-    # Disable images
     prefs = {"profile.managed_default_content_settings.images": 2}
     options.add_experimental_option("prefs", prefs)
-    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options =options)
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="137.0.7151.40").install()), options=options)
+    
+    try:
+        # Try system ChromeDriver first (for GitHub Actions)
+        driver = webdriver.Chrome(
+            service=Service('/usr/local/bin/chromedriver'),
+            options=options
+        )
+    except:
+        try:
+            # Fallback to webdriver-manager with version for Chrome 142
+            driver = webdriver.Chrome(
+                service=Service(ChromeDriverManager(driver_version="142.0.7241.0").install()), 
+                options=options
+            )
+        except:
+            # Last resort: let webdriver-manager auto-detect
+            driver = webdriver.Chrome(
+                service=Service(ChromeDriverManager().install()), 
+                options=options
+            )
+    
     return driver
 
 
