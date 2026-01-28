@@ -37,3 +37,11 @@ jobs:
 
       - name: Run price adjustment script
         run: python price_adjustment.py
+
+      - name: Commit and push adjusted price CSV
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add "adjusted price/*.csv"
+          git commit -m "Daily adjusted price update" || echo "No changes to commit"
+          git push

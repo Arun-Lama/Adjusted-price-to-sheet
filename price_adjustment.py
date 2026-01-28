@@ -4,6 +4,7 @@ from download_dividend import update_dividend_history_file
 from download_right import scrape_rights_share_data
 from read_write_google_sheet import read_google_sheet, write_to_google_sheet
 import pandas as pd
+from pathlib import Path
 
 # Sheet IDs
 adjusted_price_sheet_id = "19qf_rGChHLvRGyb8WXHLlYNPCV8Xskozn626v6Ix_dw"
@@ -88,6 +89,8 @@ if all_companies_adjusted:
     all_adj_companies_data = pd.concat(all_companies_adjusted)
     all_adj_companies_data.index = all_adj_companies_data.index.strftime('%Y-%m-%d')
     
+
+    Path("adjusted price").mkdir(exist_ok=True)
     # Write to Google Sheet
     all_adj_companies_data.to_csv(
         "adjusted price/all_adj_companies_data.csv",
