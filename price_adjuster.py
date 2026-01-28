@@ -111,6 +111,13 @@ class PriceAdjuster:
                 else:
                     segmented_price_series = pd.concat([concat[index - 1], fragmented_data[book_close_dates.index(date)]])
 
+            # 🔥 ONE-TIME SANITIZATION (do it here)
+            segmented_price_series[cols_to_convert] = (
+                segmented_price_series[cols_to_convert]
+                .apply(pd.to_numeric, errors="coerce")
+                                                    )
+
+                        
             if adj_type == 'Cash Dividend':
                 segmented_price_series[cols_to_convert] = segmented_price_series[cols_to_convert].astype(float)
                 price_day_before_bookclose = segmented_price_series['Close'].iloc[-1]
