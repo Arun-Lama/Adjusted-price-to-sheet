@@ -34,8 +34,6 @@ active_companies_tickers = latest_date_data['Ticker'].unique().tolist()
 
 print(f"Number of active companies: {len(active_companies_tickers)}")
 
-# # Process the data for price adjustment
-# unadj_data_df = unadj_data_df.sort_values(by=['Date'], ascending=True)
 
 # # Convert numeric columns to float
 # columns_except_symbol = unadj_data_df.columns.difference(['Ticker', 'Date'])
@@ -43,30 +41,30 @@ print(f"Number of active companies: {len(active_companies_tickers)}")
 #     {',': '', '': np.nan}, regex=True
 # ).astype(float)
 
-# unadj_data_df.set_index('Date', inplace=True)
+unadj_data_df.set_index('Date', inplace=True)
 
-# # Adjust prices for each company
-# all_companies_adjusted = []
-# for company in active_companies_tickers:
-#     print(f"Processing: {company}")
-#     unadjusted_company_price = unadj_data_df[unadj_data_df['Ticker'] == company]
+# Adjust prices for each company
+all_companies_adjusted = []
+for company in active_companies_tickers:
+    print(f"Processing: {company}")
+    unadjusted_company_price = unadj_data_df[unadj_data_df['Ticker'] == company]
     
-#     # Create PriceAdjuster instance
-#     adjuster = PriceAdjuster(company, unadjusted_company_price, dividend_data_df, right_data_df)
+    # Create PriceAdjuster instance
+    adjuster = PriceAdjuster(company, unadjusted_company_price, dividend_data_df, right_data_df)
     
-#     # Get adjusted data
-#     adjusted_df = adjuster.get_final_adjusted_df()
-#     all_companies_adjusted.append(adjusted_df)
+    # Get adjusted data
+    adjusted_df = adjuster.get_final_adjusted_df()
+    all_companies_adjusted.append(adjusted_df)
 
-# # Combine all adjusted data
-# if all_companies_adjusted:
-#     all_adj_companies_data = pd.concat(all_companies_adjusted)
-#     all_adj_companies_data.index = all_adj_companies_data.index.strftime('%Y-%m-%d')
+# Combine all adjusted data
+if all_companies_adjusted:
+    all_adj_companies_data = pd.concat(all_companies_adjusted)
+    all_adj_companies_data.index = all_adj_companies_data.index.strftime('%Y-%m-%d')
     
-#     # Write to Google Sheet
-#     write_to_google_sheet(all_adj_companies_data, adjusted_price_sheet_id, mode='overwrite')
-#     print(f"✅ Price adjustment completed for {len(active_companies_tickers)} companies!")
-# else:
-#     print("❌ No companies to process!")
+    # Write to Google Sheet
+    write_to_google_sheet(all_adj_companies_data, adjusted_price_sheet_id, mode='overwrite')
+    print(f"✅ Price adjustment completed for {len(active_companies_tickers)} companies!")
+else:
+    print("❌ No companies to process!")
 
-# print("✅ Price adjustment completed successfully!")
+print("✅ Price adjustment completed successfully!")
