@@ -89,7 +89,10 @@ if all_companies_adjusted:
     all_adj_companies_data.index = all_adj_companies_data.index.strftime('%Y-%m-%d')
     
     # Write to Google Sheet
-    # write_to_google_sheet(all_adj_companies_data, adjusted_price_sheet_id, mode='overwrite')
+    all_adj_companies_data.to_csv(
+        "adjusted price/all_adj_companies_data.csv",
+        index=False
+    )
     print(f"✅ Price adjustment completed for {len(active_companies_tickers)} companies!")
 else:
     print("❌ No companies to process!")
