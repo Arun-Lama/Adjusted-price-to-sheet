@@ -36,11 +36,11 @@ active_companies_tickers = latest_date_data['Ticker'].unique().tolist()
 print(f"Number of active companies: {len(active_companies_tickers)}")
 
 
-# # Convert numeric columns to float
-# columns_except_symbol = unadj_data_df.columns.difference(['Ticker', 'Date'])
-# unadj_data_df[columns_except_symbol] = unadj_data_df[columns_except_symbol].replace(
-#     {',': '', '': np.nan}, regex=True
-# ).astype(float)
+# Convert numeric columns to float
+columns_except_symbol = unadj_data_df.columns.difference(['Ticker', 'Date'])
+unadj_data_df[columns_except_symbol] = unadj_data_df[columns_except_symbol].replace(
+    {',': '', '': np.nan}, regex=True
+).astype(float)
 
 unadj_data_df.set_index('Date', inplace=True)
 
