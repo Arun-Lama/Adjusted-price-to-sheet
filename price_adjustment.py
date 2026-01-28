@@ -45,16 +45,43 @@ unadj_data_df.set_index('Date', inplace=True)
 
 # Adjust prices for each company
 all_companies_adjusted = []
+
+failed_companies = []
 for company in active_companies_tickers:
     print(f"Processing: {company}")
-    unadjusted_company_price = unadj_data_df[unadj_data_df['Ticker'] == company]
-    
-    # Create PriceAdjuster instance
-    adjuster = PriceAdjuster(company, unadjusted_company_price, dividend_data_df, right_data_df)
-    
-    # Get adjusted data
-    adjusted_df = adjuster.get_final_adjusted_df()
-    all_companies_adjusted.append(adjusted_df)
+
+    try:
+        unadjusted_company_price = unadj_data_df[
+            unadj_data_df['Ticker'] == company
+        ]
+
+        # Optional sanity check (helps avoid silent bugs)
+        if unadjusted_company_price.empty:
+            raise ValueError("No price data found")
+
+        # Create PriceAdjuster instance
+        adjuster = PriceAdjuster(
+            company,
+            unadjusted_company_price,
+            dividend_data_df,
+            right_data_df
+        )
+
+        # Get adjusted data
+        adjusted_df = adjuster.get_final_adjusted_df()
+
+        all_companies_adjusted.append(adjusted_df)
+
+    except Exception as e:
+        print(f"❌ Error processing {company}: {e}")
+        failed_companies.append({
+            "Ticker": company,
+            "Error": str(e)
+        })
+        continue
+
+print("\n✅ Price adjustment completed")
+print(f"Failed companies: {len(failed_companies)}")
 
 # Combine all adjusted data
 if all_companies_adjusted:
