@@ -96,9 +96,7 @@ if all_companies_adjusted:
 
     # Save CSV
     all_adj_companies_data.to_csv(
-        "adjusted price/all_adj_companies_data.csv",
-        index=False
-    )
+        "adjusted price/all_adj_companies_data.csv")
 
     print(f"✅ Price adjustment completed for {len(active_companies_tickers)} companies!")
 else:
