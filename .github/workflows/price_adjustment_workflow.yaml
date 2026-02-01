@@ -43,7 +43,7 @@ jobs:
           git config user.name "arun-lama"
           git config user.email "mrarunlama@gmail.com"
 
-          git add "Adjusted price/all_adj_companies_data.csv"
+          git add "adjusted price/all_adj_companies_data.csv"
           git commit -m "Update adjusted price CSV" || echo "No changes to commit"
           git push
 
