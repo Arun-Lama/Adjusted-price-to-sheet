@@ -5,6 +5,7 @@ from download_right import scrape_rights_share_data
 from read_write_google_sheet import read_google_sheet, write_to_google_sheet
 import pandas as pd
 from pathlib import Path
+import os
 
 # Sheet IDs
 adjusted_price_sheet_id = "19qf_rGChHLvRGyb8WXHLlYNPCV8Xskozn626v6Ix_dw"
@@ -90,7 +91,14 @@ if all_companies_adjusted:
     all_adj_companies_data.index = all_adj_companies_data.index.strftime('%Y-%m-%d')
     
 
-    write_to_google_sheet(all_adj_companies_data, adjusted_price_sheet_id, mode='overwrite')
+    # write_to_google_sheet(all_adj_companies_data, adjusted_price_sheet_id, mode='overwrite')
+    os.makedirs("Adjusted price", exist_ok=True)
+
+    # Save CSV
+    all_adj_companies_data.to_csv(
+        "adjusted price/all_adj_companies_data.csv",
+        index=False
+    )
 
     print(f"✅ Price adjustment completed for {len(active_companies_tickers)} companies!")
 else:
