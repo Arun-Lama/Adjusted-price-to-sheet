@@ -99,8 +99,6 @@ class PriceAdjuster:
         for index, date in enumerate(df.BookCloseDate):
             adj_type = df.iloc[index, 3]
             adjustment_factor = df.iloc[index, 1]
-            book_close = df.iloc[index, 2]
-            ticker = df.iloc[index, 0]
             cols_to_convert = ['Open', 'High', 'Low', 'Close']
 
             if index == 0:
@@ -121,7 +119,11 @@ class PriceAdjuster:
             if adj_type == 'Cash Dividend':
                 segmented_price_series[cols_to_convert] = segmented_price_series[cols_to_convert].astype(float)
                 price_day_before_bookclose = segmented_price_series['Close'].iloc[-1]
-                adjustment_value = float(adjustment_factor)
+                # 🔥 Heuristic par value detection
+                par_value = 10 if price_day_before_bookclose < 50 else 100
+
+                # Convert % → actual cash dividend
+                adjustment_value = (float(adjustment_factor) / 100) * par_value
                 
                 # Apply adjustment only if yield > 10%
                 if adjustment_value / price_day_before_bookclose > 0.10:
@@ -129,7 +131,7 @@ class PriceAdjuster:
                         1 + adjustment_value / price_day_before_bookclose
                     )
                 else:
-                    # Skip adjustment (keep prices as is)
+                        # Skip adjustment (keep prices as is)
                     pass
 
 
